@@ -1,0 +1,72 @@
+name: Build Packages Production (old)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build stage1 packages
+    runs-on: ubuntu-16-core
+
+    # https://docs.github.com/en/actions/reference/authentication-in-a-workflow
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
+
+    steps:
+      - name: Generate snapshot date
+        id: snapshot-date
+        run: |
+          echo "date=$(date -u +%Y%m%d)" >> $GITHUB_OUTPUT
+          echo "epoch=$(date -u +%s)" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - uses: actions/checkout@v3
+      - run: echo "${{ secrets.MELANGE_RSA }}" > ./wolfi-signing.rsa
+      - run: |
+          sudo mkdir -p /etc/apk/keys
+          sudo cp ./wolfi-signing.rsa.pub /etc/apk/keys/wolfi-signing.rsa.pub
+
+      - uses: chainguard-dev/actions/setup-melange@main
+
+      - id: auth
+        name: 'Authenticate to Google Cloud'
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: "projects/618116202522/locations/global/workloadIdentityPools/prod-shared-e350/providers/prod-shared-gha"
+          service_account: "prod-images-ci@prod-images-c6e5.iam.gserviceaccount.com"
+
+      - uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: prod-images-c6e5
+
+      - name: 'Check that GCloud is properly configured'
+        run: |
+          gcloud info
+          gcloud --quiet alpha storage ls
+
+      - uses: chainguard-dev/actions/inky-build-pkg@main
+        with:
+          package-name: cross-binutils
+
+      - uses: chainguard-dev/actions/inky-build-pkg@main
+        with:
+          package-name: cross-gcc
+
+      - uses: chainguard-dev/actions/inky-build-pkg@main
+        with:
+          package-name: cross-linux-headers
+
+      - uses: chainguard-dev/actions/inky-build-pkg@main
+        with:
+          package-name: cross-glibc
+
+      - uses: chainguard-dev/actions/inky-build-pkg@main
+        with:
+          package-name: cross-libstdc++
+
+      - name: 'Upload the repository to a bucket'
+        run: |
+          cp /etc/apk/keys/wolfi-signing.rsa.pub ${{ github.workspace }}/packages/wolfi-signing.rsa.pub
+          gcloud --quiet alpha storage cp --recursive ${{ github.workspace }}/packages/ gs://wolfi-production-registry-source/bootstrap/stage1/

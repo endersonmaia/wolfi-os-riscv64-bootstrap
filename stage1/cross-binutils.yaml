@@ -1,0 +1,60 @@
+package:
+  name: cross-binutils-stage1
+  version: 2.39
+  epoch: 0
+  description: "the GNU binary utilities (cross compilation)"
+  target-architecture:
+    - all
+  copyright:
+    - paths:
+      - "*"
+      attestation: TODO
+      license: GPL-3.0-or-later
+  dependencies:
+    runtime:
+
+environment:
+  contents:
+    repositories:
+      - https://mirrors.edge.kernel.org/alpine/edge/main
+    packages:
+      - alpine-baselayout-data
+      - busybox
+      - build-base
+      - scanelf
+      - ssl_client
+      - ca-certificates-bundle
+      - texinfo
+      - isl-dev
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://ftp.gnu.org/gnu/binutils/binutils-${{package.version}}.tar.gz
+      expected-sha256: d12ea6f239f1ffe3533ea11ad6e224ffcb89eb5d01bbea589e9158780fa11f10
+  - name: 'Configure binutils'
+    runs: |
+      ./configure \
+        --prefix=/usr \
+        --target=${{cross.triplet.gnu.glibc}} \
+        --disable-nls \
+        --disable-werror \
+        --disable-multilib \
+        --disable-gprofng \
+        --with-sysroot=/usr/${{cross.triplet.gnu.glibc}}
+  - uses: autoconf/make
+  - uses: autoconf/make-install
+  - name: 'Add target aliases'
+    runs: |
+      BASE="${{targets.destdir}}"/usr/libexec/gcc/${{cross.triplet.gnu.glibc}}
+
+      mkdir -p $BASE
+      ln -f ${{targets.destdir}}/usr/bin/${{cross.triplet.gnu.glibc}}-as $BASE/as
+      ln -f ${{targets.destdir}}/usr/bin/${{cross.triplet.gnu.glibc}}-ld $BASE/ld
+  - name: 'Clean up BFD plugins'
+    runs: |
+      rm -rf ${{targets.destdir}}/usr/lib/bfd-plugins
+  - name: 'Clean up documentation'
+    runs: |
+      rm -rf ${{targets.destdir}}/usr/share/info
+  - uses: strip
