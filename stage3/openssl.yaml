@@ -1,0 +1,69 @@
+package:
+  name: openssl
+  version: 3.0.7
+  epoch: 0
+  description: "Library and CLI tools for XZ and LZMA compressed files"
+  target-architecture:
+    - all
+  copyright:
+    - paths:
+      - "*"
+      attestation: TODO
+      license: Apache-2.0
+  dependencies:
+    runtime:
+
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/bootstrap/stage2
+    keyring:
+      - https://packages.wolfi.dev/bootstrap/stage2/wolfi-signing.rsa.pub
+    packages:
+      - busybox
+      - ca-certificates-bundle
+      - perl
+      - build-base
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://www.openssl.org/source/openssl-${{package.version}}.tar.gz
+      expected-sha256: 83049d042a260e696f62406ac5c08bf706fd84383f945cf21bd61e9ed95c396e
+  - name: Configure and build
+    runs: |
+      export CC=${{host.triplet.gnu}}-gcc
+      export CXX=${{host.triplet.gnu}}-g++
+      export CPP=${{host.triplet.gnu}}-cpp
+
+      case "$(uname -m)" in
+      arm*) target="armv4"; _threads="no-threads" ;;
+      *) target="$(uname -m)" ;;
+      esac
+
+      perl ./Configure \
+         linux-$target \
+         --prefix=/usr \
+         --libdir=lib \
+         --openssldir=/etc/ssl \
+         enable-ktls \
+         shared \
+         no-zlib \
+         no-async \
+         no-comp \
+         no-idea \
+         no-mdc2 \
+         no-rc5 \
+         no-ec2m \
+         no-sm2 \
+         no-sm4 \
+         no-ssl3 \
+         no-seed \
+         no-weak-ssl-ciphers \
+         $_threads \
+         -Wa,--noexecstack
+      make -j$(nproc)
+  - uses: autoconf/make-install
+  - runs: |
+      rm ${{targets.destdir}}/usr/bin/c_rehash
+  - uses: strip
