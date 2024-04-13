@@ -1,0 +1,66 @@
+package:
+  name: isl
+  version: 0.24
+  epoch: 0
+  description: "an integer set library for the polyhedral model"
+  target-architecture:
+    - all
+  copyright:
+    - paths:
+      - "*"
+      attestation: TODO
+      license: MIT
+  dependencies:
+    runtime:
+
+environment:
+  contents:
+    repositories:
+      - https://mirrors.edge.kernel.org/alpine/edge/main
+      - https://packages.wolfi.dev/bootstrap/stage1
+    keyring:
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-6165ee59.rsa.pub
+      - /usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub
+      - /usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub
+      - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub
+      - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub
+      - https://packages.wolfi.dev/bootstrap/stage1/wolfi-signing.rsa.pub
+    packages:
+      - alpine-baselayout
+      - busybox
+      - build-base
+      - ca-certificates-bundle
+      - cross-gcc-stage1
+      - cross-binutils-stage1
+      - cross-glibc-stage1
+      - cross-libstdc++-stage1
+      - cross-linux-headers
+      - cross-gmp
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://libisl.sourceforge.io/isl-${{package.version}}.tar.gz
+      expected-sha256: 26e6e4d60ad59b3fff9948eb36743f0c874e124e410ef5bab930d0f546bc580d
+  - runs: |
+      ./configure \
+        --build=${{host.triplet.gnu}} \
+        --host=${{cross.triplet.gnu.glibc}} \
+        --target=${{cross.triplet.gnu.glibc}} \
+        --with-sysroot=/usr/${{cross.triplet.gnu.glibc}} \
+        --prefix=/usr \
+        --enable-shared
+  - uses: autoconf/make
+  - uses: autoconf/make-install
+
+subpackages:
+  - name: "cross-isl"
+    pipeline:
+      - runs: |
+          make install DESTDIR="${{targets.subpkgdir}}/usr/${{cross.triplet.gnu.glibc}}"
+    options:
+      no-provides: true
+      no-depends: true
+      no-commands: true

@@ -1,0 +1,65 @@
+package:
+  name: binutils
+  version: 2.39
+  epoch: 0
+  description: "GNU binutils"
+  target-architecture:
+    - all
+  copyright:
+    - paths:
+      - "*"
+      attestation: TODO
+      license: GPL-3.0-or-later
+  dependencies:
+    runtime:
+
+environment:
+  contents:
+    repositories:
+      - https://mirrors.edge.kernel.org/alpine/edge/main
+      - https://packages.wolfi.dev/bootstrap/stage1
+    keyring:
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-6165ee59.rsa.pub
+      - /usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub
+      - /usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub
+      - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub
+      - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub
+      - https://packages.wolfi.dev/bootstrap/stage1/wolfi-signing.rsa.pub
+    packages:
+      - alpine-baselayout
+      - busybox
+      - perl
+      - ca-certificates-bundle
+      - build-base
+      - cross-gcc-stage1
+      - cross-binutils-stage1
+      - cross-glibc-stage1
+      - cross-linux-headers
+      - texinfo
+      - isl-dev
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://ftp.gnu.org/gnu/binutils/binutils-${{package.version}}.tar.gz
+      expected-sha256: d12ea6f239f1ffe3533ea11ad6e224ffcb89eb5d01bbea589e9158780fa11f10
+  - name: 'Configure binutils'
+    runs: |
+      ./configure \
+        --prefix=/usr \
+        --build=$(./config.guess) \
+        --host=${{cross.triplet.gnu.glibc}} \
+        --target=${{cross.triplet.gnu.glibc}} \
+        --disable-nls \
+        --disable-werror \
+        --disable-multilib \
+        --disable-gprofng
+  - runs: |
+      make -j$(nproc) V=1
+  - uses: autoconf/make-install
+  - name: 'Clean up documentation'
+    runs: |
+      rm -rf ${{targets.destdir}}/usr/share/info
+  - uses: strip

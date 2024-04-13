@@ -1,0 +1,78 @@
+package:
+  name: gmp
+  version: 6.2.1
+  epoch: 1
+  description: "a library for arbitrary precision arithmetic"
+  target-architecture:
+    - all
+  copyright:
+    - paths:
+      - "*"
+      attestation: TODO
+      license: LGPL-3.0-or-later OR GPL-2.0-or-later
+  dependencies:
+    runtime:
+
+environment:
+  contents:
+    repositories:
+      - https://mirrors.edge.kernel.org/alpine/edge/main
+      - https://packages.wolfi.dev/bootstrap/stage1
+    keyring:
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-6165ee59.rsa.pub
+      - /usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub
+      - /usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub
+      - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub
+      - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub
+      - https://packages.wolfi.dev/bootstrap/stage1/wolfi-signing.rsa.pub
+    packages:
+      - alpine-baselayout
+      - busybox
+      - build-base
+      - ca-certificates-bundle
+      - cross-gcc-stage1
+      - cross-binutils-stage1
+      - cross-glibc-stage1
+      - cross-libstdc++-stage1
+      - cross-linux-headers
+      - m4
+      - texinfo
+      - autoconf
+      - automake
+      - libtool
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://gmplib.org/download/gmp/gmp-${{package.version}}.tar.xz
+      expected-sha256: fd4829912cddd12f84181c3451cc752be224643e87fac497b69edddadc49b4f2
+  - runs: |
+      autoreconf -vif
+  - runs: |
+      ./configure \
+        --host=${{cross.triplet.gnu.glibc}} \
+        --target=${{cross.triplet.gnu.glibc}} \
+        --with-sysroot=/usr/${{cross.triplet.gnu.glibc}} \
+        --prefix=/usr \
+        --enable-cxx \
+        --with-pic
+  - uses: autoconf/make
+  - uses: autoconf/make-install
+  - name: 'Clean up documentation'
+    runs: |
+      rm -rf ${{targets.destdir}}/usr/share/info
+
+subpackages:
+  - name: "cross-gmp"
+    pipeline:
+      - runs: |
+          make install pkgconfigdir="/usr/lib/pkgconfig" DESTDIR="${{targets.subpkgdir}}/usr/${{cross.triplet.gnu.glibc}}"
+      - name: 'Clean up documentation'
+        runs: |
+          rm -rf ${{targets.subpkgdir}}/usr/${{cross.triplet.gnu.glibc}}/usr/share/info
+    options:
+      no-provides: true
+      no-depends: true
+      no-commands: true

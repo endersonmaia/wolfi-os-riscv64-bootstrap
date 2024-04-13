@@ -1,0 +1,74 @@
+package:
+  name: busybox
+  version: 1.36.1
+  epoch: 1
+  description: "swiss-army knife for embedded systems"
+  target-architecture:
+    - all
+  copyright:
+    - paths:
+      - "*"
+      attestation: TODO
+      license: MIT
+  dependencies:
+    runtime:
+  scriptlets:
+    trigger:
+      paths:
+        - /bin
+        - /sbin
+        - /usr/bin
+        - /usr/sbin
+      script: |
+        #!/bin/busybox sh
+        /bin/busybox --install -s
+
+environment:
+  contents:
+    repositories:
+      - https://mirrors.edge.kernel.org/alpine/edge/main
+      - https://packages.wolfi.dev/bootstrap/stage1
+    keyring:
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-6165ee59.rsa.pub
+      - /usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub
+      - /usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub
+      - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub
+      - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub
+      - https://packages.wolfi.dev/bootstrap/stage1/wolfi-signing.rsa.pub
+    packages:
+      - busybox
+      - ssl_client
+      - ca-certificates-bundle
+      - build-base
+      - perl
+      - cross-gcc-stage1
+      - cross-binutils-stage1
+      - cross-glibc-stage1
+      - cross-linux-headers
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://distfiles.alpinelinux.org/distfiles/edge/busybox-${{package.version}}.tar.bz2
+      expected-sha256: b8cc24c9574d809e7279c3be349795c5d5ceb6fdf19ca709f80cde50e47de314
+  - name: Configure
+    runs: |
+      cp busyboxconfig .config
+  - runs: |
+      make CC="${{cross.triplet.gnu.glibc}}-gcc" V=1 -j$(nproc)
+  - name: Install
+    runs: |
+      mkdir -p "${{targets.destdir}}"/usr/sbin
+      mkdir -p "${{targets.destdir}}"/usr/bin
+      mkdir -p "${{targets.destdir}}"/tmp
+      mkdir -p "${{targets.destdir}}"/var/cache/misc
+      mkdir -p "${{targets.destdir}}"/bin
+      mkdir -p "${{targets.destdir}}"/sbin
+      mkdir -p "${{targets.destdir}}"/etc
+      mkdir -p "${{targets.destdir}}"/usr/share/man/man1
+      chmod 1777 "${{targets.destdir}}"/tmp
+      install -m755 busybox "${{targets.destdir}}"/bin/busybox
+      install -m644 securetty "${{targets.destdir}}"/etc/securetty
+  - uses: strip

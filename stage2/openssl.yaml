@@ -1,0 +1,89 @@
+package:
+  name: openssl
+  version: 3.0.7
+  epoch: 0
+  description: "Library and CLI tools for XZ and LZMA compressed files"
+  target-architecture:
+    - all
+  copyright:
+    - paths:
+        - "*"
+      attestation: TODO
+      license: Apache-2.0
+  dependencies:
+    runtime:
+environment:
+  contents:
+    repositories:
+      - https://mirrors.edge.kernel.org/alpine/edge/main
+      - https://packages.wolfi.dev/bootstrap/stage1
+    keyring:
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
+      - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-6165ee59.rsa.pub
+      - /usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub
+      - /usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub
+      - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub
+      - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub
+      - https://packages.wolfi.dev/bootstrap/stage1/wolfi-signing.rsa.pub
+    packages:
+      - busybox
+      - ssl_client
+      - ca-certificates-bundle
+      - cross-gcc-stage1
+      - cross-binutils-stage1
+      - cross-glibc-stage1
+      - cross-libstdc++-stage1
+      - cross-linux-headers
+      - perl
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://www.openssl.org/source/openssl-${{package.version}}.tar.gz
+      expected-sha256: 83049d042a260e696f62406ac5c08bf706fd84383f945cf21bd61e9ed95c396e
+  - name: Configure and build
+    runs: |
+      export CC=${{cross.triplet.gnu.glibc}}-gcc
+      export CXX=${{cross.triplet.gnu.glibc}}-g++
+      export CPP=${{cross.triplet.gnu.glibc}}-cpp
+
+      case "$(uname -m)" in
+      arm*) target="armv4"; _threads="no-threads" ;;
+      *) target="$(uname -m)" ;;
+      esac
+
+      perl ./Configure \
+         linux-$target \
+         --prefix=/usr \
+         --libdir=lib \
+         --openssldir=/etc/ssl \
+         enable-ktls \
+         shared \
+         no-zlib \
+         no-async \
+         no-comp \
+         no-idea \
+         no-mdc2 \
+         no-rc5 \
+         no-ec2m \
+         no-sm2 \
+         no-sm4 \
+         no-ssl3 \
+         no-seed \
+         no-weak-ssl-ciphers \
+         $_threads \
+         -Wa,--noexecstack
+      make -j$(nproc)
+  - uses: autoconf/make-install
+  - runs: |
+      rm ${{targets.destdir}}/usr/bin/c_rehash
+  - uses: strip
+subpackages:
+  - name: "cross-openssl"
+    pipeline:
+      - runs: |
+          make install DESTDIR="${{targets.subpkgdir}}/usr/${{cross.triplet.gnu.glibc}}"
+    options:
+      no-commands: true
+      no-provides: true
+      no-depends: true
