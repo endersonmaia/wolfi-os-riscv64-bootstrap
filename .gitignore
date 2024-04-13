@@ -2,6 +2,6 @@
 !*/
 !/.gitignore
 !index.html
-!/stage1/packages/**
-!/stage2/packages/**
-!/stage3/packages/**
+!/stage1/riscv64/**
+!/stage2/riscv64/**
+!/stage3/riscv64/**

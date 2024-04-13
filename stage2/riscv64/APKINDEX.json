@@ -1,0 +1,361 @@
+{
+  "Signature": null,
+  "Description": "",
+  "Packages": [
+    {
+      "Name": "m4",
+      "Version": "1.4.19-r0",
+      "Arch": "riscv64",
+      "Description": "GNU macro processor",
+      "License": "bzip2-1.0.6",
+      "Origin": "m4",
+      "Maintainer": "",
+      "URL": "",
+      "Checksum": "UpFPETBFN8O7R1OTr6BaZWtFEOM=",
+      "Dependencies": [
+        "so:ld-linux-riscv64-lp64d.so.1",
+        "so:libc.so.6"
+      ],
+      "Provides": [
+        "cmd:m4=1.4.19-r0"
+      ],
+      "InstallIf": null,
+      "Size": 282141,
+      "InstalledSize": 983826,
+      "ProviderPriority": 0,
+      "BuildTime": "1970-01-01T00:00:00Z",
+      "BuildDate": 0,
+      "RepoCommit": "d4ecfb0c7cca421b9ec6842bc6b7307d6c1b6d1d",
+      "Replaces": null,
+      "DataHash": ""
+    },
+    {
+      "Name": "ncurses",
+      "Version": "6.4-r0",
+      "Arch": "riscv64",
+      "Description": "console display library",
+      "License": "MIT",
+      "Origin": "ncurses",
+      "Maintainer": "",
+      "URL": "",
+      "Checksum": "leZtOcBwTYRlxh3HqF4sBLlr80o=",
+      "Dependencies": [
+        "so:ld-linux-riscv64-lp64d.so.1",
+        "so:libc.so.6"
+      ],
+      "Provides": [
+        "cmd:clear=6.4-r0",
+        "cmd:infocmp=6.4-r0",
+        "cmd:ncursesw6-config=6.4-r0",
+        "cmd:tabs=6.4-r0",
+        "cmd:tic=6.4-r0",
+        "cmd:toe=6.4-r0",
+        "cmd:tput=6.4-r0",
+        "cmd:tset=6.4-r0",
+        "pc:formw=6.4.20240330",
+        "pc:menuw=6.4.20240330",
+        "pc:ncursesw=6.4.20240330",
+        "pc:panelw=6.4.20240330",
+        "so:libformw.so.6=6",
+        "so:libmenuw.so.6=6",
+        "so:libncursesw.so.6=6",
+        "so:libpanelw.so.6=6"
+      ],
+      "InstallIf": null,
+      "Size": 6504736,
+      "InstalledSize": 27231370,
+      "ProviderPriority": 0,
+      "BuildTime": "1970-01-01T00:00:00Z",
+      "BuildDate": 0,
+      "RepoCommit": "62e550b42f5f1481931370042dec4c806dc476a7",
+      "Replaces": null,
+      "DataHash": ""
+    },
+    {
+      "Name": "busybox",
+      "Version": "1.36.1-r1",
+      "Arch": "riscv64",
+      "Description": "swiss-army knife for embedded systems",
+      "License": "MIT",
+      "Origin": "busybox",
+      "Maintainer": "",
+      "URL": "",
+      "Checksum": "prlDXkCDtGpr2cN+IWNY3neHkHI=",
+      "Dependencies": [
+        "so:ld-linux-riscv64-lp64d.so.1",
+        "so:libc.so.6",
+        "so:libcrypt.so.1",
+        "so:libm.so.6",
+        "so:libresolv.so.2"
+      ],
+      "Provides": [
+        "cmd:busybox=1.36.1-r1"
+      ],
+      "InstallIf": null,
+      "Size": 554572,
+      "InstalledSize": 891835,
+      "ProviderPriority": 0,
+      "BuildTime": "1970-01-01T00:00:00Z",
+      "BuildDate": 0,
+      "RepoCommit": "62e550b42f5f1481931370042dec4c806dc476a7",
+      "Replaces": null,
+      "DataHash": ""
+    },
+    {
+      "Name": "file",
+      "Version": "5.45-r0",
+      "Arch": "riscv64",
+      "Description": "file-type identification utility",
+      "License": "BSD-2-Clause",
+      "Origin": "file",
+      "Maintainer": "",
+      "URL": "",
+      "Checksum": "dfWMMl7zJj1D1QlFx2fGywyzjIM=",
+      "Dependencies": [
+        "so:ld-linux-riscv64-lp64d.so.1",
+        "so:libc.so.6",
+        "so:libm.so.6"
+      ],
+      "Provides": [
+        "cmd:file=5.45-r0",
+        "pc:libmagic=5.45",
+        "so:libmagic.so.1=1"
+      ],
+      "InstallIf": null,
+      "Size": 569590,
+      "InstalledSize": 8819288,
+      "ProviderPriority": 0,
+      "BuildTime": "1970-01-01T00:00:00Z",
+      "BuildDate": 0,
+      "RepoCommit": "62e550b42f5f1481931370042dec4c806dc476a7",
+      "Replaces": null,
+      "DataHash": ""
+    },
+    {
+      "Name": "gawk",
+      "Version": "5.1.1-r0",
+      "Arch": "riscv64",
+      "Description": "GNU awk pattern-matching language",
+      "License": "GPL-3.0-or-later",
+      "Origin": "gawk",
+      "Maintainer": "",
+      "URL": "",
+      "Checksum": "DpEzk+ajet3xEC4MoanEG+fY6bY=",
+      "Dependencies": [
+        "so:ld-linux-riscv64-lp64d.so.1",
+        "so:libc.so.6",
+        "so:libm.so.6"
+      ],
+      "Provides": [
+        "cmd:gawk-5.1.1=5.1.1-r0",
+        "cmd:gawk=5.1.1-r0",
+        "so:filefuncs.so=0",
+        "so:fnmatch.so=0",
+        "so:fork.so=0",
+        "so:inplace.so=0",
+        "so:intdiv.so=0",
+        "so:ordchr.so=0",
+        "so:readdir.so=0",
+        "so:readfile.so=0",
+        "so:revoutput.so=0",
+        "so:revtwoway.so=0",
+        "so:rwarray.so=0",
+        "so:time.so=0"
+      ],
+      "InstallIf": null,
+      "Size": 1469275,
+      "InstalledSize": 4997822,
+      "ProviderPriority": 0,
+      "BuildTime": "1970-01-01T00:00:00Z",
+      "BuildDate": 0,
+      "RepoCommit": "62e550b42f5f1481931370042dec4c806dc476a7",
+      "Replaces": null,
+      "DataHash": ""
+    },
+    {
+      "Name": "grep",
+      "Version": "3.7-r0",
+      "Arch": "riscv64",
+      "Description": "GNU grep implementation",
+      "License": "GPL-3.0-or-later",
+      "Origin": "grep",
+      "Maintainer": "",
+      "URL": "",
+      "Checksum": "Bf0fE4b+BZhGyORu9njz/GUuRAk=",
+      "Dependencies": [
+        "so:ld-linux-riscv64-lp64d.so.1",
+        "so:libc.so.6"
+      ],
+      "Provides": [
+        "cmd:egrep=3.7-r0",
+        "cmd:fgrep=3.7-r0",
+        "cmd:grep=3.7-r0"
+      ],
+      "InstallIf": null,
+      "Size": 305798,
+      "InstalledSize": 1320792,
+      "ProviderPriority": 0,
+      "BuildTime": "1970-01-01T00:00:00Z",
+      "BuildDate": 0,
+      "RepoCommit": "62e550b42f5f1481931370042dec4c806dc476a7",
+      "Replaces": null,
+      "DataHash": ""
+    },
+    {
+      "Name": "gzip",
+      "Version": "1.12-r0",
+      "Arch": "riscv64",
+      "Description": "GNU data compression program",
+      "License": "GPL-3.0-or-later",
+      "Origin": "gzip",
+      "Maintainer": "",
+      "URL": "",
+      "Checksum": "QoHV8+AnantMfsHHMZBQDvz/FXo=",
+      "Dependencies": [
+        "so:ld-linux-riscv64-lp64d.so.1",
+        "so:libc.so.6"
+      ],
+      "Provides": [
+        "cmd:gunzip=1.12-r0",
+        "cmd:gzexe=1.12-r0",
+        "cmd:gzip=1.12-r0",
+        "cmd:zcat=1.12-r0",
+        "cmd:zcmp=1.12-r0",
+        "cmd:zdiff=1.12-r0",
+        "cmd:zegrep=1.12-r0",
+        "cmd:zfgrep=1.12-r0",
+        "cmd:zforce=1.12-r0",
+        "cmd:zgrep=1.12-r0",
+        "cmd:zless=1.12-r0",
+        "cmd:zmore=1.12-r0",
+        "cmd:znew=1.12-r0"
+      ],
+      "InstallIf": null,
+      "Size": 87115,
+      "InstalledSize": 249172,
+      "ProviderPriority": 0,
+      "BuildTime": "1970-01-01T00:00:00Z",
+      "BuildDate": 0,
+      "RepoCommit": "62e550b42f5f1481931370042dec4c806dc476a7",
+      "Replaces": null,
+      "DataHash": ""
+    },
+    {
+      "Name": "make",
+      "Version": "4.3-r0",
+      "Arch": "riscv64",
+      "Description": "GNU make",
+      "License": "GPL-3.0-or-later",
+      "Origin": "make",
+      "Maintainer": "",
+      "URL": "",
+      "Checksum": "gEwe1VEsU2WA8BVSPjkX8M3lRRQ=",
+      "Dependencies": [
+        "so:ld-linux-riscv64-lp64d.so.1",
+        "so:libc.so.6"
+      ],
+      "Provides": [
+        "cmd:make=4.3-r0"
+      ],
+      "InstallIf": null,
+      "Size": 726153,
+      "InstalledSize": 2284235,
+      "ProviderPriority": 0,
+      "BuildTime": "1970-01-01T00:00:00Z",
+      "BuildDate": 0,
+      "RepoCommit": "9b35d3aeca3f86b1cb958137351b3015dad3b88c",
+      "Replaces": null,
+      "DataHash": ""
+    },
+    {
+      "Name": "patch",
+      "Version": "2.7.6-r0",
+      "Arch": "riscv64",
+      "Description": "GNU make",
+      "License": "GPL-3.0-or-later",
+      "Origin": "patch",
+      "Maintainer": "",
+      "URL": "",
+      "Checksum": "AUooCzNNPuA3fWzA+nk90P5VqFE=",
+      "Dependencies": [
+        "so:ld-linux-riscv64-lp64d.so.1",
+        "so:libc.so.6"
+      ],
+      "Provides": [
+        "cmd:patch=2.7.6-r0"
+      ],
+      "InstallIf": null,
+      "Size": 108670,
+      "InstalledSize": 240051,
+      "ProviderPriority": 0,
+      "BuildTime": "1970-01-01T00:00:00Z",
+      "BuildDate": 0,
+      "RepoCommit": "9b35d3aeca3f86b1cb958137351b3015dad3b88c",
+      "Replaces": null,
+      "DataHash": ""
+    },
+    {
+      "Name": "sed",
+      "Version": "4.8-r0",
+      "Arch": "riscv64",
+      "Description": "GNU stream editor",
+      "License": "GPL-3.0-or-later",
+      "Origin": "sed",
+      "Maintainer": "",
+      "URL": "",
+      "Checksum": "bawgHWlg4jEtpIkf6UFwh4ps41Y=",
+      "Dependencies": [
+        "so:ld-linux-riscv64-lp64d.so.1",
+        "so:libc.so.6"
+      ],
+      "Provides": [
+        "cmd:sed=4.8-r0"
+      ],
+      "InstallIf": null,
+      "Size": 284457,
+      "InstalledSize": 1235083,
+      "ProviderPriority": 0,
+      "BuildTime": "1970-01-01T00:00:00Z",
+      "BuildDate": 0,
+      "RepoCommit": "9b35d3aeca3f86b1cb958137351b3015dad3b88c",
+      "Replaces": null,
+      "DataHash": ""
+    },
+    {
+      "Name": "xz",
+      "Version": "5.2.6-r0",
+      "Arch": "riscv64",
+      "Description": "Library and CLI tools for XZ and LZMA compressed files",
+      "License": "GPL-3.0-or-later",
+      "Origin": "xz",
+      "Maintainer": "",
+      "URL": "",
+      "Checksum": "CTZTCXyl9aieEtDT6vAKAvUAfPE=",
+      "Dependencies": [
+        "so:ld-linux-riscv64-lp64d.so.1",
+        "so:libc.so.6"
+      ],
+      "Provides": [
+        "cmd:lzmadec=5.2.6-r0",
+        "cmd:lzmainfo=5.2.6-r0",
+        "cmd:xz=5.2.6-r0",
+        "cmd:xzdec=5.2.6-r0",
+        "cmd:xzdiff=5.2.6-r0",
+        "cmd:xzgrep=5.2.6-r0",
+        "cmd:xzless=5.2.6-r0",
+        "cmd:xzmore=5.2.6-r0",
+        "pc:liblzma=5.2.6",
+        "so:liblzma.so.5=5"
+      ],
+      "InstallIf": null,
+      "Size": 1507156,
+      "InstalledSize": 6549339,
+      "ProviderPriority": 0,
+      "BuildTime": "1970-01-01T00:00:00Z",
+      "BuildDate": 0,
+      "RepoCommit": "9b35d3aeca3f86b1cb958137351b3015dad3b88c",
+      "Replaces": null,
+      "DataHash": "91c57353caabacb175bf69b37eba835f539e2b13456089d9e00e754959c25a1d"
+    }
+  ]
+}
