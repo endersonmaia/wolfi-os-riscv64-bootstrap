@@ -1,0 +1,7 @@
+*
+!*/
+!/.gitignore
+!/index.html
+!stage1/packages
+!stage2/packages
+!stage3/packages
