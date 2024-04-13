@@ -49,11 +49,12 @@ pipeline:
 
       case "$(uname -m)" in
       arm*) target="armv4"; _threads="no-threads" ;;
-      *) target="$(uname -m)" ;;
+      riscv64) target="riscv64"; linux="linux64" ;;
+      *) target="$(uname -m)"; linux="linux" ;;
       esac
 
       perl ./Configure \
-         linux-$target \
+         $linux-$target \
          --prefix=/usr \
          --libdir=lib \
          --openssldir=/etc/ssl \
@@ -73,6 +74,7 @@ pipeline:
          no-weak-ssl-ciphers \
          $_threads \
          -Wa,--noexecstack
+      perl configdata.pm --dump
       make -j$(nproc)
   - uses: autoconf/make-install
   - runs: |
