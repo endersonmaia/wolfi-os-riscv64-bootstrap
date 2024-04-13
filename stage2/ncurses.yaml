@@ -41,8 +41,8 @@ environment:
 pipeline:
   - uses: fetch
     with:
-      uri: https://distfiles.alpinelinux.org/distfiles/edge/ncurses-${{package.version}}-20230715.tgz
-      expected-sha256: 7a8dc72f7021815ac7d594e9bd74fc13b20ec4d84295e60c04163197e28aada7
+      uri: https://distfiles.alpinelinux.org/distfiles/edge/ncurses-${{package.version}}-20240330.tgz
+      expected-sha256: 56fa42885fd0de700abfd278add48e6ac18d2342910048eb29f5d72b8ab315e7
   - name: Configure
     runs: |
         ./configure \
