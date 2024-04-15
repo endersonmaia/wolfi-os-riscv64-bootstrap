@@ -62,7 +62,6 @@ pipeline:
         --disable-libcc1 \
         --disable-decimal-float \
         --disable-threads \
-        --disable-libatomic \
         --disable-libgomp \
         --disable-libquadmath \
         --disable-libssp \
