@@ -1,4 +1,4 @@
-# risv64 wolfi-os bootstrap
+# riscv64 wolfi-os bootstrap
 
 This repository is an attempt to merge the original bootstrap repositories into one.
 
