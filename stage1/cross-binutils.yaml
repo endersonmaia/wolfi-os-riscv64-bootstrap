@@ -1,6 +1,6 @@
 package:
   name: cross-binutils-stage1
-  version: 2.39
+  version: 2.42
   epoch: 0
   description: "the GNU binary utilities (cross compilation)"
   target-architecture:
@@ -31,7 +31,7 @@ pipeline:
   - uses: fetch
     with:
       uri: https://ftp.gnu.org/gnu/binutils/binutils-${{package.version}}.tar.gz
-      expected-sha256: d12ea6f239f1ffe3533ea11ad6e224ffcb89eb5d01bbea589e9158780fa11f10
+      expected-sha256: 5d2a6c1d49686a557869caae08b6c2e83699775efd27505e01b2f4db1a024ffc
   - name: 'Configure binutils'
     runs: |
       ./configure \
