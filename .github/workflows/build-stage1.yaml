@@ -1,0 +1,55 @@
+name: Build stage1
+
+on:
+  pull_request:
+    paths:
+      - stage1/*.yaml
+
+jobs:
+  build:
+    name: Build stage1 packages
+    runs-on: ubuntu-22.04
+
+    # https://docs.github.com/en/actions/reference/authentication-in-a-workflow
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
+
+    steps:
+      - name: Generate snapshot date
+        id: snapshot-date
+        run: |
+          echo "date=$(date -u +%Y%m%d)" >> $GITHUB_OUTPUT
+          echo "epoch=$(date -u +%s)" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - uses: actions/checkout@v3
+      - run: echo "${{ secrets.MELANGE_RSA }}" > ./endersonmaia-melange.rsa
+      - run: |
+          sudo mkdir -p /etc/apk/keys
+          sudo cp ./endersonmaia-melange.rsa.pub /etc/apk/keys/endersonmaia-melange.rsa.pub
+
+      - uses: chainguard-dev/actions/setup-melange@main
+
+      - uses: chainguard-dev/actions/inky-build-pkg@main
+        with:
+          archs: riscv64
+          package-name: stage1/cross-binutils
+          signing-key-name: endersonmaia-melange.rsa
+
+      # - uses: chainguard-dev/actions/inky-build-pkg@main
+      #   with:
+      #     package-name: cross-gcc
+
+      # - uses: chainguard-dev/actions/inky-build-pkg@main
+      #   with:
+      #     package-name: cross-linux-headers
+
+      # - uses: chainguard-dev/actions/inky-build-pkg@main
+      #   with:
+      #     package-name: cross-glibc
+
+      # - uses: chainguard-dev/actions/inky-build-pkg@main
+      #   with:
+      #     package-name: cross-libstdc++
