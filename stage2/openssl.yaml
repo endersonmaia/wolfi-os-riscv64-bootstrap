@@ -14,9 +14,6 @@ package:
     runtime:
 environment:
   contents:
-    repositories:
-      - https://mirrors.edge.kernel.org/alpine/edge/main
-      - https://endersonmaia.github.io/wolfi-os-riscv64-bootstrap/stage1
     keyring:
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
@@ -27,15 +24,7 @@ environment:
       - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub
       - https://packages.wolfi.dev/bootstrap/stage1/wolfi-signing.rsa.pub
     packages:
-      - busybox
-      - ssl_client
-      - ca-certificates-bundle
-      - cross-gcc-stage1
-      - cross-binutils-stage1
-      - cross-glibc-stage1
-      - cross-libstdc++-stage1
-      - cross-linux-headers
-      - perl
+      - debian-stage1
 pipeline:
   - uses: fetch
     with:
