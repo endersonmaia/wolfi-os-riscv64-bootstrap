@@ -4,7 +4,7 @@ MELANGE ?= ${MELANGE_DIR}/melange
 KEY ?= local-melange.rsa
 REPO ?= $(shell pwd)/packages
 
-BINUTILS_VERSION ?= 2.39-r0
+BINUTILS_VERSION ?= 2.42-r0
 GCC_VERSION ?= 12.2.0-r2
 LINUX_HEADERS_VERSION ?= 5.16.9-r0
 GLIBC_VERSION ?= 2.36-r0
