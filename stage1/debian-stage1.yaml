@@ -1,0 +1,86 @@
+package:
+  name: debian-stage1
+  version: 0.1.0
+  epoch: 0
+  description: "attempt to build a stage1 from Debian to compile wolfi-os stage2"
+  target-architecture:
+    - riscv64
+  dependencies:
+    runtime:
+    provides:
+      - make
+      - binutils
+      - scanelf
+      - wget
+      - so:klibc-J4-fdLuyXWAj3WS7ieX2DTkB2G4.so
+      - so:libacl.so.1
+      - so:libapparmor.so.1
+      - so:libaudit.so.1
+      - so:libblkid.so.1
+      - so:libbz2.so.1.0
+      - so:libcap-ng.so.0
+      - so:libcap.so.2
+      - so:libcrypt.so.1
+      - so:libcrypto.so.3
+      - so:libcryptsetup.so.12
+      - so:libctf-nobfd.so.0
+      - so:libctf.so.0
+      - so:libdevmapper.so.1.02.1
+      - so:libelf.so.1
+      - so:libfdisk.so.1
+      - so:libgcrypt.so.20
+      - so:libgmp.so.10
+      - so:libgnutls.so.30
+      - so:libidn2.so.0
+      - so:libisl.so.23
+      - so:libjansson.so.4
+      - so:libkmod.so.2
+      - so:liblz4.so.1
+      - so:liblzma.so.5
+      - so:libm.so.6
+      - so:libmount.so.1
+      - so:libmpc.so.3
+      - so:libmpfr.so.6
+      - so:libnettle.so.8
+      - so:libpam.so.0
+      - so:libpam_misc.so.0
+      - so:libpcre2-8.so.0
+      - so:libperl.so.5.38
+      - so:libpsl.so.5
+      - so:libseccomp.so.2
+      - so:libselinux.so.1
+      - so:libsframe.so.1
+      - so:libsmartcols.so.1
+      - so:libssl.so.3
+      - so:libsystemd.so.0
+      - so:libtinfo.so.6
+      - so:libudev.so.1
+      - so:libuuid.so.1
+      - so:libz.so.1
+      - so:libzstd.so.1
+      - so:libattr.so.1
+
+environment:
+  contents:
+    repositories:
+      - https://mirrors.edge.kernel.org/alpine/edge/main
+    packages:
+      - alpine-baselayout-data
+      - busybox
+      - tar
+      - xz
+      - build-base
+      - scanelf
+      - ssl_client
+      - ca-certificates-bundle
+      - dpkg
+
+pipeline:
+  - runs: |
+      export SHELL=/bin/bash
+      for pkg in $(ls ./${{package.name}}/*.deb); do
+        echo "Unpacking $(basename $pkg) into ${{targets.destdir}}..."
+        dpkg -x ./${{package.name}}/$(basename $pkg) ${{targets.destdir}}
+      done
+      (cd ${{targets.destdir}}/bin;
+      ln -s bash sh)
