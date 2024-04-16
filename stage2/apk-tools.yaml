@@ -18,7 +18,6 @@ environment:
   contents:
     repositories:
       - https://mirrors.edge.kernel.org/alpine/edge/main
-      - https://endersonmaia.github.io/wolfi-os-riscv64-bootstrap/stage1
     keyring:
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
@@ -31,14 +30,9 @@ environment:
     packages:
       - alpine-baselayout
       - busybox
-      - perl
-      - make
       - ca-certificates-bundle
       - scdoc
-      - cross-gcc-stage1
-      - cross-binutils-stage1
-      - cross-glibc-stage1
-      - cross-linux-headers
+      - debian-stage1
       - cross-openssl
       - cross-pkgconf
       - cross-zlib
@@ -52,11 +46,11 @@ pipeline:
       sed -i -e 's:-Werror::' Make.rules
       echo "FULL_VERSION=${{package.version}}-r${{package.epoch}}" > config.mk
   - runs: |
-      make LUA="no" AR="${{cross.triplet.gnu.glibc}}-ar" \
-        CC="${{cross.triplet.gnu.glibc}}-gcc" PKG_CONFIG="${{cross.triplet.gnu.glibc}}-pkg-config" V=1
+      make LUA="no" AR="riscv64-linux-gnu-ar" \
+        CC="riscv64-linux-gnu-gcc" PKG_CONFIG="riscv64-linux-gnu-pkg-config" V=1
   - runs: |
-      make LUA="no" AR="${{cross.triplet.gnu.glibc}}-ar" \
-        CC="${{cross.triplet.gnu.glibc}}-gcc" PKG_CONFIG="${{cross.triplet.gnu.glibc}}-pkg-config" V=1 \
+      make LUA="no" AR="riscv64-linux-gnu-ar" \
+        CC="riscv64-linux-gnu-gcc" PKG_CONFIG="riscv64-linux-gnu-pkg-config" V=1 \
         DESTDIR="${{targets.destdir}}" \
         install
 

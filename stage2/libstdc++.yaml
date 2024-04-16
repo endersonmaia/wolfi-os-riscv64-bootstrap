@@ -17,7 +17,6 @@ environment:
   contents:
     repositories:
       - https://mirrors.edge.kernel.org/alpine/edge/main
-      - https://endersonmaia.github.io/wolfi-os-riscv64-bootstrap/stage1
     keyring:
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
@@ -30,7 +29,6 @@ environment:
     packages:
       - alpine-baselayout-data
       - busybox
-      - build-base
       - scanelf
       - ssl_client
       - ca-certificates-bundle
@@ -43,9 +41,7 @@ environment:
       - zip
       - bison
       - flex
-      - cross-binutils-stage1
-      - cross-gcc-stage1
-      - cross-glibc-stage1
+      - debian-stage1
 
 pipeline:
   - uses: fetch
@@ -61,8 +57,8 @@ pipeline:
       ../libstdc++-v3/configure \
         --prefix=/usr \
         --libdir=/lib \
-        --host=${{cross.triplet.gnu.glibc}} \
-        --target=${{cross.triplet.gnu.glibc}} \
+        --host=riscv64-linux-gnu \
+        --target=riscv64-linux-gnu \
         --build=$(../config.guess) \
         --disable-nls \
         --disable-multilib \

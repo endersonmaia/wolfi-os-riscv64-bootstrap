@@ -22,7 +22,6 @@ environment:
       - busybox
       - tar
       - xz
-      - build-base
       - scanelf
       - ssl_client
       - ca-certificates-bundle

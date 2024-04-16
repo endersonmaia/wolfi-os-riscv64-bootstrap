@@ -17,7 +17,6 @@ environment:
   contents:
     repositories:
       - https://mirrors.edge.kernel.org/alpine/edge/main
-      - https://endersonmaia.github.io/wolfi-os-riscv64-bootstrap/stage1
     keyring:
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
@@ -30,13 +29,8 @@ environment:
     packages:
       - alpine-baselayout
       - busybox
-      - build-base
       - ca-certificates-bundle
-      - cross-gcc-stage1
-      - cross-binutils-stage1
-      - cross-glibc-stage1
-      - cross-libstdc++-stage1
-      - cross-linux-headers
+      - debian-stage1
       - m4
       - texinfo
       - autoconf
@@ -52,9 +46,9 @@ pipeline:
       autoreconf -vif
   - runs: |
       ./configure \
-        --host=${{cross.triplet.gnu.glibc}} \
-        --target=${{cross.triplet.gnu.glibc}} \
-        --with-sysroot=/usr/${{cross.triplet.gnu.glibc}} \
+        --host=riscv64-linux-gnu \
+        --target=riscv64-linux-gnu \
+        --with-sysroot=/usr/riscv64-linux-gnu \
         --prefix=/usr \
         --enable-cxx \
         --with-pic
@@ -68,10 +62,10 @@ subpackages:
   - name: "cross-gmp"
     pipeline:
       - runs: |
-          make install pkgconfigdir="/usr/lib/pkgconfig" DESTDIR="${{targets.subpkgdir}}/usr/${{cross.triplet.gnu.glibc}}"
+          make install pkgconfigdir="/usr/lib/pkgconfig" DESTDIR="${{targets.subpkgdir}}/usr/riscv64-linux-gnu"
       - name: 'Clean up documentation'
         runs: |
-          rm -rf ${{targets.subpkgdir}}/usr/${{cross.triplet.gnu.glibc}}/usr/share/info
+          rm -rf ${{targets.subpkgdir}}/usr/riscv64-linux-gnu/usr/share/info
     options:
       no-provides: true
       no-depends: true

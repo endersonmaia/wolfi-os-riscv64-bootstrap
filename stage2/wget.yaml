@@ -17,7 +17,6 @@ environment:
   contents:
     repositories:
       - https://mirrors.edge.kernel.org/alpine/edge/main
-      - https://endersonmaia.github.io/wolfi-os-riscv64-bootstrap/stage1
     keyring:
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
@@ -28,14 +27,9 @@ environment:
       - /usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub
       - https://packages.wolfi.dev/bootstrap/stage1/wolfi-signing.rsa.pub
     packages:
-      - alpine-baselayout
       - busybox
-      - perl
       - ca-certificates-bundle
-      - cross-gcc-stage1
-      - cross-binutils-stage1
-      - cross-glibc-stage1
-      - cross-linux-headers
+      - debian-stage1
       - cross-openssl
       - cross-pkgconf
 
@@ -46,8 +40,8 @@ pipeline:
       expected-sha256: 5726bb8bc5ca0f6dc7110f6416e4bb7019e2d2ff5bf93d1ca2ffcc6656f220e5
   - runs: |
       ./configure \
-        --host=${{cross.triplet.gnu.glibc}} \
-        --target=${{cross.triplet.gnu.glibc}} \
+        --host=riscv64-linux-gnu \
+        --target=riscv64-linux-gnu \
         --prefix=/usr \
         --sysconfdir=/etc \
         --without-libidn \

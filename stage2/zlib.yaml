@@ -16,7 +16,6 @@ environment:
   contents:
     repositories:
       - https://mirrors.edge.kernel.org/alpine/edge/main
-      - https://endersonmaia.github.io/wolfi-os-riscv64-bootstrap/stage1
     keyring:
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
@@ -29,19 +28,15 @@ environment:
     packages:
       - alpine-baselayout
       - busybox
-      - perl
       - ca-certificates-bundle
-      - cross-gcc-stage1
-      - cross-binutils-stage1
-      - cross-glibc-stage1
-      - cross-linux-headers
+      - debian-stage1
 pipeline:
   - uses: fetch
     with:
       uri: https://zlib.net/zlib-${{package.version}}.tar.gz
       expected-sha256: b3a24de97a8fdbc835b9833169501030b8977031bcb54b3b3ac13740f846ab30
   - runs: |
-      CHOST="${{cross.triplet.gnu.glibc}}" ./configure \
+      CHOST="riscv64-linux-gnu" ./configure \
         --prefix=/usr \
         --libdir=/lib \
         --shared
@@ -52,7 +47,7 @@ subpackages:
   - name: "cross-zlib"
     pipeline:
       - runs: |
-          make install pkgconfigdir="/usr/lib/pkgconfig" DESTDIR="${{targets.subpkgdir}}/usr/${{cross.triplet.gnu.glibc}}"
+          make install pkgconfigdir="/usr/lib/pkgconfig" DESTDIR="${{targets.subpkgdir}}/usr/riscv64-linux-gnu"
     options:
       no-provides: true
       no-depends: true

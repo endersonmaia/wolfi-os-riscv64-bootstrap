@@ -18,7 +18,6 @@ environment:
   contents:
     repositories:
       - https://mirrors.edge.kernel.org/alpine/edge/main
-      - https://endersonmaia.github.io/wolfi-os-riscv64-bootstrap/stage1
     keyring:
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
       - /usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
@@ -31,13 +30,9 @@ environment:
     packages:
       - alpine-baselayout
       - busybox
-      - perl
       - ca-certificates-bundle
       - xz
-      - cross-gcc-stage1
-      - cross-binutils-stage1
-      - cross-glibc-stage1
-      - cross-linux-headers
+      - debian-stage1
 
 pipeline:
   - uses: fetch
@@ -45,7 +40,7 @@ pipeline:
       uri: https://dev.gentoo.org/~xen0n/distfiles/pax-utils-${{package.version}}.tar.xz
       expected-sha256: 8baed2f9c5ae8e0cda1b9c75990864101afc64fad0a4616e10f3ff8ef891040b
   - runs: |
-      make -j$(nproc) USE_CAP=no CC="${{cross.triplet.gnu.glibc}}-gcc"
+      make -j$(nproc) USE_CAP=no CC="riscv64-linux-gnu-gcc"
   - uses: autoconf/make-install
   - runs: |
       rm -f "${{targets.destdir}}"/usr/bin/lddtree

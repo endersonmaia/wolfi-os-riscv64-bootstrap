@@ -1,13 +1,12 @@
-ARCH ?= $(shell uname -m)
-MELANGE_DIR ?= ../melange
-MELANGE ?= ${MELANGE_DIR}/melange
+ARCH ?= riscv64
+MELANGE ?= $(shell which melange)
 KEY ?= local-melange.rsa
 REPO ?= $(shell pwd)/packages
 
 M4_VERSION ?= 1.4.19-r0
-NCURSES_VERSION ?= 6.3-r0
-BUSYBOX_VERSION ?= 1.35.0-r1
-FILE_VERSION ?= 5.45-r1
+NCURSES_VERSION ?= 6.4-r0
+BUSYBOX_VERSION ?= 1.36.1-r1
+FILE_VERSION ?= 5.45-r0
 GAWK_VERSION ?= 5.1.1-r0
 GREP_VERSION ?= 3.7-r0
 GZIP_VERSION ?= 1.12-r0
@@ -38,9 +37,9 @@ BUILD_BASE_VERSION ?= 1-r1
 
 MELANGE_OPTS ?= \
 	--repository-append ${REPO} \
+	--repository-append ../stage1/packages \
 	--keyring-append ${KEY}.pub \
 	--signing-key ${KEY} \
-	--pipeline-dir ${MELANGE_DIR}/pipelines \
 	--arch ${ARCH} \
 	--strip-origin-name
 
@@ -58,7 +57,7 @@ PACKAGES = \
 	packages/${ARCH}/patch-${PATCH_VERSION}.apk \
 	packages/${ARCH}/sed-${SED_VERSION}.apk \
 	packages/${ARCH}/xz-${XZ_VERSION}.apk \
-        packages/${ARCH}/openssl-${OPENSSL_VERSION}.apk \
+    packages/${ARCH}/openssl-${OPENSSL_VERSION}.apk \
 	packages/${ARCH}/cross-pkgconf-${CROSS_PKGCONF_VERSION}.apk \
 	packages/${ARCH}/ca-certificates-${CA_CERTIFICATES_VERSION}.apk \
 	packages/${ARCH}/wget-${WGET_VERSION}.apk \
