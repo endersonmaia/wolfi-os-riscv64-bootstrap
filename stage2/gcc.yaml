@@ -42,10 +42,7 @@ environment:
       - mpc1-dev
       - isl-dev
       - zlib-dev
-      - cross-binutils-stage1
-      - cross-gcc-stage1
-      - cross-libstdc++-stage1
-      - cross-glibc-stage1
+      - debian-stage1
       - cross-gmp
       - cross-mpfr
       - cross-mpc
@@ -66,10 +63,10 @@ pipeline:
       cd build
       ../configure \
         --build=$(uname -m)-alpine-linux-musl \
-        --host=${{cross.triplet.gnu.glibc}} \
-        --target=${{cross.triplet.gnu.glibc}} \
+        --host=riscv64-linux-gnu \
+        --target=riscv64-linux-gnu \
         --prefix=/usr \
-        --with-build-sysroot=/usr/${{cross.triplet.gnu.glibc}} \
+        --with-build-sysroot=/usr/riscv64-linux-gnu \
         --disable-nls \
         --disable-werror \
         --with-glibc-version=2.35 \

@@ -42,7 +42,7 @@ pipeline:
     runs: |
         ./configure \
           --prefix=/usr \
-          --host=${{cross.triplet.gnu.glibc}} \
+          --host=riscv64-linux-gnu \
           --mandir=/usr/share/man \
           --without-ada \
           --without-tests \

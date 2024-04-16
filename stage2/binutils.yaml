@@ -44,8 +44,8 @@ pipeline:
       ./configure \
         --prefix=/usr \
         --build=$(./config.guess) \
-        --host=${{cross.triplet.gnu.glibc}} \
-        --target=${{cross.triplet.gnu.glibc}} \
+        --host=riscv64-linux-gnu \
+        --target=riscv64-linux-gnu \
         --disable-nls \
         --disable-werror \
         --disable-multilib \

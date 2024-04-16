@@ -41,8 +41,8 @@ pipeline:
     runs: |
       export DEFS="NO_ASM"
       ./configure \
-         --host=${{cross.triplet.gnu.glibc}} \
-         --target=${{cross.triplet.gnu.glibc}} \
+         --host=riscv64-linux-gnu \
+         --target=riscv64-linux-gnu \
          --prefix=/usr \
          --datadir=/usr/share
   - uses: autoconf/make

@@ -31,11 +31,7 @@ environment:
       - busybox
       - ca-certificates-bundle
       - texinfo
-      - cross-gcc-stage1
-      - cross-binutils-stage1
-      - cross-glibc-stage1
-      - cross-libstdc++-stage1
-      - cross-linux-headers
+      - debian-stage1
       - cross-gmp
 
 pipeline:
@@ -45,9 +41,9 @@ pipeline:
       expected-sha256: 0c98a3f1732ff6ca4ea690552079da9c597872d30e96ec28414ee23c95558a7f
   - runs: |
       ./configure \
-        --host=${{cross.triplet.gnu.glibc}} \
-        --target=${{cross.triplet.gnu.glibc}} \
-        --with-sysroot=/usr/${{cross.triplet.gnu.glibc}} \
+        --host=riscv64-linux-gnu \
+        --target=riscv64-linux-gnu \
+        --with-sysroot=/usr/riscv64-linux-gnu \
         --prefix=/usr \
         --enable-shared
   - uses: autoconf/make
@@ -60,10 +56,10 @@ subpackages:
   - name: "cross-mpfr"
     pipeline:
       - runs: |
-          make install DESTDIR="${{targets.subpkgdir}}/usr/${{cross.triplet.gnu.glibc}}"
+          make install DESTDIR="${{targets.subpkgdir}}/usr/riscv64-linux-gnu"
       - name: 'Clean up documentation'
         runs: |
-          rm -rf ${{targets.subpkgdir}}/usr/${{cross.triplet.gnu.glibc}}/usr/share/info
+          rm -rf ${{targets.subpkgdir}}/usr/riscv64-linux-gnu/usr/share/info
     options:
       no-provides: true
       no-depends: true

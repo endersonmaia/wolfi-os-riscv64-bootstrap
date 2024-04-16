@@ -30,11 +30,7 @@ environment:
       - alpine-baselayout
       - busybox
       - ca-certificates-bundle
-      - cross-gcc-stage1
-      - cross-binutils-stage1
-      - cross-glibc-stage1
-      - cross-libstdc++-stage1
-      - cross-linux-headers
+      - debian-stage1
       - cross-gmp
       - cross-mpfr
 
@@ -45,9 +41,9 @@ pipeline:
       expected-sha256: 17503d2c395dfcf106b622dc142683c1199431d095367c6aacba6eec30340459
   - runs: |
       EGREP=egrep ./configure \
-        --host=${{cross.triplet.gnu.glibc}} \
-        --target=${{cross.triplet.gnu.glibc}} \
-        --with-sysroot=/usr/${{cross.triplet.gnu.glibc}} \
+        --host=riscv64-linux-gnu \
+        --target=riscv64-linux-gnu \
+        --with-sysroot=/usr/riscv64-linux-gnu \
         --prefix=/usr \
         --enable-shared
   - uses: autoconf/make
@@ -57,7 +53,7 @@ subpackages:
   - name: "cross-mpc"
     pipeline:
       - runs: |
-          make install DESTDIR="${{targets.subpkgdir}}/usr/${{cross.triplet.gnu.glibc}}"
+          make install DESTDIR="${{targets.subpkgdir}}/usr/riscv64-linux-gnu"
     options:
       no-provides: true
       no-depends: true

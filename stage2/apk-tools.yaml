@@ -46,11 +46,11 @@ pipeline:
       sed -i -e 's:-Werror::' Make.rules
       echo "FULL_VERSION=${{package.version}}-r${{package.epoch}}" > config.mk
   - runs: |
-      make LUA="no" AR="${{cross.triplet.gnu.glibc}}-ar" \
-        CC="${{cross.triplet.gnu.glibc}}-gcc" PKG_CONFIG="${{cross.triplet.gnu.glibc}}-pkg-config" V=1
+      make LUA="no" AR="riscv64-linux-gnu-ar" \
+        CC="riscv64-linux-gnu-gcc" PKG_CONFIG="riscv64-linux-gnu-pkg-config" V=1
   - runs: |
-      make LUA="no" AR="${{cross.triplet.gnu.glibc}}-ar" \
-        CC="${{cross.triplet.gnu.glibc}}-gcc" PKG_CONFIG="${{cross.triplet.gnu.glibc}}-pkg-config" V=1 \
+      make LUA="no" AR="riscv64-linux-gnu-ar" \
+        CC="riscv64-linux-gnu-gcc" PKG_CONFIG="riscv64-linux-gnu-pkg-config" V=1 \
         DESTDIR="${{targets.destdir}}" \
         install
 

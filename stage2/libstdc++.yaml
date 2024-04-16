@@ -41,9 +41,7 @@ environment:
       - zip
       - bison
       - flex
-      - cross-binutils-stage1
-      - cross-gcc-stage1
-      - cross-glibc-stage1
+      - debian-stage1
 
 pipeline:
   - uses: fetch
@@ -59,8 +57,8 @@ pipeline:
       ../libstdc++-v3/configure \
         --prefix=/usr \
         --libdir=/lib \
-        --host=${{cross.triplet.gnu.glibc}} \
-        --target=${{cross.triplet.gnu.glibc}} \
+        --host=riscv64-linux-gnu \
+        --target=riscv64-linux-gnu \
         --build=$(../config.guess) \
         --disable-nls \
         --disable-multilib \

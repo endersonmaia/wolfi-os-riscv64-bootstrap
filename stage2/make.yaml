@@ -40,8 +40,8 @@ pipeline:
   - name: Configure
     runs: |
       ./configure \
-         --host=${{cross.triplet.gnu.glibc}} \
-         --target=${{cross.triplet.gnu.glibc}} \
+         --host=riscv64-linux-gnu \
+         --target=riscv64-linux-gnu \
          --prefix=/usr \
          --datadir=/usr/share \
          --without-guile

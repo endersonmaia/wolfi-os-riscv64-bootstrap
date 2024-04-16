@@ -52,9 +52,7 @@ environment:
       - zip
       - bison
       - flex
-      - cross-binutils-stage1
-      - cross-gcc-stage1
-      - cross-linux-headers
+      - debian-stage1
       - python3
       - grep
 pipeline:
@@ -75,13 +73,13 @@ pipeline:
         --prefix=/ \
         --libdir=/lib \
         --includedir=/usr/include \
-        --host=${{cross.triplet.gnu.glibc}} \
+        --host=riscv64-linux-gnu \
         --build=$(../config.guess) \
         --disable-nls \
         --disable-werror \
         --enable-kernel=4.9 \
-        --with-sysroot=/usr/${{cross.triplet.gnu.glibc}} \
-        --with-headers=/usr/${{cross.triplet.gnu.glibc}}/usr/include \
+        --with-sysroot=/usr/riscv64-linux-gnu \
+        --with-headers=/usr/riscv64-linux-gnu/usr/include \
         --disable-nls
   - runs: |
       make -C build -j$(nproc)
