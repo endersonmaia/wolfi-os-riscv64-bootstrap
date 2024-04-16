@@ -30,7 +30,6 @@ environment:
       - alpine-baselayout
       - busybox
       - ca-certificates-bundle
-      - build-base
       - debian-stage1
       - texinfo
       - isl-dev

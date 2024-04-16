@@ -29,7 +29,6 @@ environment:
       - busybox
       - ssl_client
       - ca-certificates-bundle
-      - build-base
       - file
       - debian-stage1
 pipeline:

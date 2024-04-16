@@ -29,7 +29,6 @@ environment:
     packages:
       - alpine-baselayout
       - busybox
-      - build-base
       - ca-certificates-bundle
       - texinfo
       - cross-gcc-stage1

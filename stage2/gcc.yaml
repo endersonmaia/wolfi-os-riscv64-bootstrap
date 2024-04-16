@@ -30,7 +30,6 @@ environment:
     packages:
       - alpine-baselayout-data
       - busybox
-      - build-base
       - scanelf
       - ssl_client
       - ca-certificates-bundle
